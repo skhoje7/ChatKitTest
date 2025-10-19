@@ -1,1 +1,26 @@
-# ChatKitTest
+# ChatKit Vercel Demo
+
+A minimal [Next.js](https://nextjs.org/) front end that embeds [OpenAI ChatKit](https://platform.openai.com/docs/guides/chatkit) and fetches a client secret from a serverless API route. The project is ready to deploy on [Vercel](https://vercel.com/)—just provide your `OPENAI_API_KEY`.
+
+## Getting started locally
+
+```bash
+pnpm install  # or npm install / yarn
+pnpm dev      # runs next dev
+```
+
+Then visit [http://localhost:3000](http://localhost:3000) to chat with the assistant.
+
+## Deploying to Vercel
+
+1. Push this repository to GitHub and import it into Vercel.
+2. Add an `OPENAI_API_KEY` environment variable in the Vercel dashboard.
+3. Deploy the project. Vercel will run `next build` automatically.
+
+## How it works
+
+- `app/api/chatkit/session/route.ts` issues requests to the ChatKit REST API using the server-side API key and returns the resulting client secret to the browser.
+- `components/MyChat.tsx` uses the [`@openai/chatkit-react`](https://www.npmjs.com/package/@openai/chatkit-react) hooks to request the client secret and render the chat widget.
+- Static assets and layout live under the `app/` directory, leveraging the Next.js App Router for instant deployment on Vercel.
+
+> **Note:** Remember to configure [CORS origins or assistant instructions](https://platform.openai.com/docs/guides/chatkit/deploy#authorization) in your OpenAI project to match your deployed domain for production use.
