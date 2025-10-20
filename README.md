@@ -19,6 +19,11 @@ A minimal [Next.js](https://nextjs.org/) front end that embeds [OpenAI ChatKit](
 
 Then visit [http://localhost:3000](http://localhost:3000) to chat with the assistant.
 
+> **Running without touching `.env.local`**: If you prefer not to store secrets on disk (for example,
+> inside Codespaces or other hosted dev environments), start the app and paste your API key in the
+> “Developer settings” form that appears when the chat widget cannot find `OPENAI_API_KEY`. The key
+> is cached only in your browser `localStorage`.
+
 > **Why this avoids 403 install errors:** The ChatKit widget is loaded from OpenAI's CDN at runtime,
 > so the project no longer depends on preview-only npm packages. A standard `npm install` works with no
 > extra authentication.

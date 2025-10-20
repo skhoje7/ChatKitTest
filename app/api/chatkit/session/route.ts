@@ -2,25 +2,42 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const CHATKIT_ENDPOINT = 'https://api.openai.com/v1/chatkit/sessions';
 
+type SessionRequestBody = {
+  refresh_token?: unknown;
+  apiKey?: unknown;
+  workflowId?: unknown;
+};
+
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const workflowId = process.env.CHATKIT_WORKFLOW_ID;
+  const body = (await request.json().catch(() => null)) as SessionRequestBody | null;
+
+  const localApiKey =
+    typeof body?.apiKey === 'string' && process.env.NODE_ENV !== 'production'
+      ? body.apiKey
+      : undefined;
+  const apiKey = process.env.OPENAI_API_KEY ?? localApiKey;
+
+  const workflowIdFromEnv = process.env.CHATKIT_WORKFLOW_ID;
+  const workflowIdOverride =
+    typeof body?.workflowId === 'string' && body.workflowId.trim() !== ''
+      ? body.workflowId
+      : undefined;
+  const workflowId = workflowIdOverride ?? workflowIdFromEnv;
 
   if (!apiKey) {
     return NextResponse.json(
-      { error: 'OPENAI_API_KEY is not configured on the server.' },
+      {
+        error:
+          'OPENAI_API_KEY is not configured. Supply it in .env.local or paste it into the local developer settings.',
+      },
       { status: 500 },
     );
   }
 
-  let refreshToken: string | undefined;
-
-  try {
-    const body = await request.json();
-    refreshToken = typeof body?.refresh_token === 'string' ? body.refresh_token : undefined;
-  } catch (error) {
-    // ignore malformed payloads and fall back to a new session
-  }
+  const refreshToken =
+    typeof body?.refresh_token === 'string' && body.refresh_token.trim() !== ''
+      ? body.refresh_token
+      : undefined;
 
   const payload: Record<string, unknown> = {
     model: 'gpt-4.1-mini',
