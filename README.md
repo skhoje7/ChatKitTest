@@ -4,10 +4,18 @@ A minimal [Next.js](https://nextjs.org/) front end that embeds [OpenAI ChatKit](
 
 ## Getting started locally
 
-```bash
-pnpm install  # or npm install / yarn
-pnpm dev      # runs next dev
-```
+1. Copy `.env.local.example` to `.env.local` and fill in your credentials.
+
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+2. Install dependencies and start the dev server:
+
+   ```bash
+   pnpm install  # or npm install / yarn
+   pnpm dev      # runs next dev
+   ```
 
 Then visit [http://localhost:3000](http://localhost:3000) to chat with the assistant.
 
@@ -18,7 +26,7 @@ Then visit [http://localhost:3000](http://localhost:3000) to chat with the assis
 ## Deploying to Vercel
 
 1. Push this repository to GitHub and import it into Vercel.
-2. Add an `OPENAI_API_KEY` environment variable in the Vercel dashboard.
+2. Add an `OPENAI_API_KEY` environment variable in the Vercel dashboard (and `CHATKIT_WORKFLOW_ID` if you use a custom workflow).
 3. Deploy the project. Vercel will run `next build` automatically.
 
 ## How it works

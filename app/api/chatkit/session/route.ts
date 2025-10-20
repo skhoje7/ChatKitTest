@@ -4,6 +4,7 @@ const CHATKIT_ENDPOINT = 'https://api.openai.com/v1/chatkit/sessions';
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
+  const workflowId = process.env.CHATKIT_WORKFLOW_ID;
 
   if (!apiKey) {
     return NextResponse.json(
@@ -26,6 +27,10 @@ export async function POST(request: NextRequest) {
     instructions:
       'You are an upbeat product specialist embedded on a marketing site. Provide succinct answers and highlight key capabilities of ChatKit.',
   };
+
+  if (workflowId) {
+    payload.workflow = workflowId;
+  }
 
   if (refreshToken) {
     payload.refresh_token = refreshToken;
